@@ -47,11 +47,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "add-category",
   data: function data() {
     return {
+      errorsData: [],
       category: {
         title: "",
         description: ""
@@ -59,6 +62,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   methods: {
+    setErrors: function setErrors(errors) {
+      this.errorsData = errors;
+      console.log(this.errorsData);
+    },
     create: function create() {
       var _this = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
@@ -71,7 +78,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   name: "categoryList"
                 });
               })["catch"](function (error) {
-                console.log(error);
+                if (error.response.status === 422) {
+                  _this.setErrors(error.response.data.errors);
+                } else {
+                  alert('Unkown error!');
+                }
               });
             case 2:
             case "end":
@@ -187,65 +198,87 @@ var render = function () {
             },
             [
               _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-12 mb-2" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", [_vm._v("Title")]),
+                _c(
+                  "div",
+                  { staticClass: "col-12 mb-2" },
+                  [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", [_vm._v("Title")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.category.title,
+                            expression: "category.title",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text" },
+                        domProps: { value: _vm.category.title },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.category, "title", $event.target.value)
+                          },
+                        },
+                      }),
+                    ]),
                     _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.category.title,
-                          expression: "category.title",
-                        },
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "text" },
-                      domProps: { value: _vm.category.title },
-                      on: {
-                        input: function ($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.category, "title", $event.target.value)
-                        },
-                      },
-                    }),
-                  ]),
-                ]),
+                    _vm.errorsData
+                      ? _c("errors", {
+                          attrs: { errors: _vm.errorsData["title"] },
+                        })
+                      : _vm._e(),
+                  ],
+                  1
+                ),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-12 mb-2" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", [_vm._v("Description")]),
+                _c(
+                  "div",
+                  { staticClass: "col-12 mb-2" },
+                  [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", [_vm._v("Description")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.category.description,
+                            expression: "category.description",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text" },
+                        domProps: { value: _vm.category.description },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.category,
+                              "description",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]),
                     _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.category.description,
-                          expression: "category.description",
-                        },
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "text" },
-                      domProps: { value: _vm.category.description },
-                      on: {
-                        input: function ($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.category,
-                            "description",
-                            $event.target.value
-                          )
-                        },
-                      },
-                    }),
-                  ]),
-                ]),
+                    _vm.errorsData
+                      ? _c("errors", {
+                          attrs: { errors: _vm.errorsData["description"] },
+                        })
+                      : _vm._e(),
+                  ],
+                  1
+                ),
                 _vm._v(" "),
                 _vm._m(1),
               ]),

@@ -5,7 +5,9 @@
  */
 require('./bootstrap');
 
-window.Vue = require('vue').default;
+//window.Vue = require('vue').default;
+
+import Vue from 'vue';
 
 /**
  * The following block of code may be used to automatically register your
@@ -30,6 +32,8 @@ import VueAxios from 'vue-axios';
 import axios from 'axios';
 
 import App from './components/App.vue';
+
+
 import {routes} from './routes';
 
 Vue.use(VueRouter);
@@ -39,6 +43,8 @@ const router = new VueRouter({
     mode: 'history',
     routes: routes
 });
+
+Vue.component('errors',require('./components/Errors.vue').default);
 
 const app = new Vue({
     el: '#app',

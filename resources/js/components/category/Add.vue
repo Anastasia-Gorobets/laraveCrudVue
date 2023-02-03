@@ -13,12 +13,14 @@
                                     <label>Title</label>
                                     <input type="text" class="form-control" v-model="category.title">
                                 </div>
+                                <errors v-if="errorsData" :errors="errorsData['title']"></errors>
                             </div>
                             <div class="col-12 mb-2">
                                 <div class="form-group">
                                     <label>Description</label>
                                     <input type="text" class="form-control" v-model="category.description">
                                 </div>
+                                <errors v-if="errorsData" :errors="errorsData['description']"></errors>
                             </div>
                             <div class="col-12 mb-2">
                                 <button type="submit" class="btn btn-primary">Save</button>
@@ -35,6 +37,7 @@ export default{
     name:"add-category",
     data(){
         return{
+            errorsData:[],
             category:{
                 title:"",
                 description:""
@@ -42,11 +45,24 @@ export default{
         }
     },
     methods:{
+
+        setErrors(errors){
+           this.errorsData = errors;
+
+           console.log(this.errorsData);
+
+
+        },
+
         async create(){
             await this.axios.post('/api/category', this.category).then(response=>{
                 this.$router.push({name:"categoryList"})
             }).catch(error=>{
-                console.log(error)
+                if(error.response.status === 422) {
+                    this.setErrors(error.response.data.errors);
+                } else {
+                    alert('Unkown error!')
+                }
             })
         }
     }
